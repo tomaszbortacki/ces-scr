@@ -1,26 +1,28 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import { useEffect, useState } from "react";
+import { TaskInterface, Tasks } from "./components/Task/Task";
+import { Chart, ChartDataInterface } from "./components/Chart/Chart";
+import { Form } from "./components/Form/Form";
 
-function App() {
+const App = () => {
+  const [inputData, setInputData] = useState<TaskInterface[]>([]);
+  const [chartData, setChartData] = useState<ChartDataInterface>();
+  const [cpuUsage, setCPUUsage] = useState<number>(0);
+
+  useEffect(() => {
+    const dataInstance = new Tasks(inputData);
+    setChartData(dataInstance.setChartData());
+    setCPUUsage(dataInstance.setCPUUsage());
+  }, [inputData]);
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div>
+      <h1 style={{ color: "#fff", textAlign: "center" }}>
+        Systemy czasu rzeczywistego - Szeregowanie zadań cyklicznych - CES
+      </h1>
+      <Form setData={setInputData} />
+      <Chart cpuUsage={cpuUsage} chartData={chartData} />
     </div>
   );
-}
+};
 
 export default App;
